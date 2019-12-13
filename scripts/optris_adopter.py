@@ -6,14 +6,22 @@ from sensor_msgs.msg import Image, PointCloud2
 
 thermal_pub = rospy.Publisher(
     '/adopter/thermal_mono', Image, queue_size=1)
+lidar_pub = rospy.Publisher(
+    '/adopter/lidar_points', PointCloud2, queue_size=1)
 
 
-def thermalCallback(mode):
-    thermal_pub.publish(mode)
+def thermalCallback(image):
+    thermal_pub.publish(image)
+
+
+def lidarCallback(points):
+    lidar_pub.publish(points)
 
 
 rospy.init_node('optris_adopter', anonymous=True)
 
 thermal_sub = rospy.Subscriber(
     '/optris/image_mono', Image, thermalCallback, queue_size=1, buff_size=5000000)
+lidar_sub = rospy.Subscriber(
+    '/os1_cloud_node/points', PointCloud2, lidarCallback, queue_size=1, buff_size=5000000)
 rospy.spin()
