@@ -11,6 +11,9 @@ endif()
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  pcl_conversions
+  pcl_ros
+  cv_bridge
   std_msgs
   std_srvs
   sensor_msgs
@@ -93,12 +96,19 @@ include_directories(
 add_executable(optris_imager_node       src/optris_imager_node.cpp src/OptrisImager.cpp)
 add_executable(optris_colorconvert_node src/optris_colorconvert_node.cpp)
 add_executable(optris_binary_image_node src/optris_binary_image_node.cpp)
+add_executable(optris_mono_image_node src/optris_mono_image_node.cpp)
+add_executable(optris_mono_range_node src/optris_mono_range_node.cpp)
+add_executable(optris_correct_distortion src/optris_correct_distortion.cpp)
+add_executable(optris_fusion_lidar src/optris_fusion_lidar.cpp)
 
 ## make sure msg/srvs are generated before building the targets
 ## also, the libs must be copied before trying to build the other files
 add_dependencies(optris_imager_node optris_drivers_generate_messages_cpp)
 add_dependencies(optris_colorconvert_node optris_drivers_generate_messages_cpp)
 add_dependencies(optris_binary_image_node ${PROJECT_NAME}_gencfg optris_drivers_generate_messages_cpp)
+add_dependencies(optris_mono_image_node ${PROJECT_NAME}_gencfg optris_drivers_generate_messages_cpp)
+add_dependencies(optris_mono_range_node ${PROJECT_NAME}_gencfg optris_drivers_generate_messages_cpp)
+add_dependencies(optris_fusion_lidar ${PROJECT_NAME}_gencfg optris_drivers_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(optris_imager_node
@@ -130,6 +140,41 @@ target_link_libraries(optris_binary_image_node
   ircore
   udev
   usb-1.0
+)
+
+target_link_libraries(optris_mono_image_node
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+  irimager
+  irimageprocessing
+  ircore
+  udev
+  usb-1.0
+)
+
+target_link_libraries(optris_mono_range_node
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+  irimager
+  irimageprocessing
+  ircore
+  udev
+  usb-1.0
+)
+
+target_link_libraries(optris_correct_distortion
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+  irimager
+  irimageprocessing
+  ircore
+  udev
+  usb-1.0
+)
+
+target_link_libraries(optris_fusion_lidar
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
 )
 
 
