@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
   // init subscribers and publishers
   ros::NodeHandle n;
   image_transport::ImageTransport it(n);
-  image_transport::Subscriber subThermal = it.subscribe("/optris/image_mono", 1, onThermalDataReceive);
-  image_transport::Publisher pubt = it.advertise("thermal_mono", 1);
+  image_transport::Subscriber subThermal = it.subscribe("/adapter/thermal_mono", 1, onThermalDataReceive);
+  image_transport::Publisher pubt = it.advertise("thermal_range", 1);
   _pubThermal = &pubt;
 
   // specify loop rate: a meaningful value according to your publisher configuration
