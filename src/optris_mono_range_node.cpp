@@ -17,10 +17,6 @@ double thres1 = 5;
 double thres2 = 95;
 cv::Mat img(480, 640, CV_8UC1);
 
-/**
- * Callback function for receiving thermal data from thermal imager node
- * @param image      image containing raw temperature data
- */
 void onThermalDataReceive(const sensor_msgs::ImageConstPtr &image)
 {
   try
