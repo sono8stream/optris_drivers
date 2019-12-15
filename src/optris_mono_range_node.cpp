@@ -15,7 +15,6 @@ bool _invert = false;
 int histogram[HISTO_SIZE] = {};
 double thres1 = 5;
 double thres2 = 95;
-cv::Mat img(480, 640, CV_8UC1);
 
 void onThermalDataReceive(const sensor_msgs::ImageConstPtr &image)
 {
@@ -57,6 +56,8 @@ void onThermalDataReceive(const sensor_msgs::ImageConstPtr &image)
         break;
       }
     }
+
+    cv::Mat img(input.rows, input.cols, CV_8UC1);
     for (int j = 0; j < input.rows; j++)
     {
       unsigned short *src = input.ptr<unsigned short>(j);
@@ -93,7 +94,7 @@ int main(int argc, char *argv[])
   // init subscribers and publishers
   ros::NodeHandle n;
   image_transport::ImageTransport it(n);
-  image_transport::Subscriber subThermal = it.subscribe("/adapter/thermal_mono", 1, onThermalDataReceive);
+  image_transport::Subscriber subThermal = it.subscribe("/thermal_corrected", 1, onThermalDataReceive);
   image_transport::Publisher pubt = it.advertise("thermal_range", 1);
   _pubThermal = &pubt;
 

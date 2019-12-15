@@ -14,13 +14,13 @@ double _maxTemp = 40.0;
 
 double _threshold = 40.0;
 bool _invert = false;
-cv::Mat img(480, 640, CV_8UC1);
 
 void onThermalDataReceive(const sensor_msgs::ImageConstPtr &image)
 {
   try
   {
     cv::Mat input = cv_bridge::toCvCopy(image, sensor_msgs::image_encodings::MONO16)->image;
+    cv::Mat img(input.rows, input.cols, CV_8UC1);
     for (int j = 0; j < input.rows; j++)
     {
       unsigned short *src = input.ptr<unsigned short>(j);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
   ros::NodeHandle n;
   image_transport::ImageTransport it(n);
-  image_transport::Subscriber subThermal = it.subscribe("/adapter/thermal_mono", 1, onThermalDataReceive);
+  image_transport::Subscriber subThermal = it.subscribe("/thermal_corrected", 1, onThermalDataReceive);
   image_transport::Publisher pubt = it.advertise("thermal_fix_range", 1);
   _pubThermal = &pubt;
 
